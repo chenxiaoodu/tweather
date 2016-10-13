@@ -142,5 +142,5 @@ public class TWeatherDB {
         return list;
     }
 
-    
+
 }
