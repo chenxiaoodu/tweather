@@ -3,7 +3,9 @@ package com.tweather.app.acticity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -72,11 +74,25 @@ public class ChooseAreaActivity extends Activity {
     /**
      * 是否从WeatherActivity中跳转过来
      */
-
+     private boolean isFromWeatherActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+
+        isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //已经选择了城市并不是从WeatherActivity跳转过来，才会直接跳转到WeatherActivity
+        if (prefs.getBoolean("city_selected", false) && !isFromWeatherActivity) {
+            Intent intent = new Intent(this, WeatherActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+
+
         setContentView(R.layout.choose_area);
         lv =(ListView)findViewById(R.id.list_view);
         tvTitle =(TextView) findViewById(R.id.title_text);
@@ -94,10 +110,10 @@ public class ChooseAreaActivity extends Activity {
                     queryCounties();
                 }else if (currentLevel==LEVEL_COUNTY){
                     String countyCode = countyList.get(position).getCountyCode();
-                    /*Intent intent = new Intent(ChooseAreaActivity.this,WeatherActivity.class);
+                    Intent intent = new Intent(ChooseAreaActivity.this,WeatherActivity.class);
                     intent.putExtra("county_code",countyCode);
                     startActivity(intent);
-                    finish();*/
+                    finish();
                 }
             }
         });
@@ -140,7 +156,7 @@ public class ChooseAreaActivity extends Activity {
             tvTitle.setText(selectedProvince.getProvinceName());
             currentLevel = LEVEL_CITY;
         } else {
-            queryFromServer(selectedProvince.getProvinceCode(), LEVEL_CITY); 
+            queryFromServer(selectedProvince.getProvinceCode(), LEVEL_CITY);
         }
     }
 
@@ -266,10 +282,10 @@ public class ChooseAreaActivity extends Activity {
         } else if (currentLevel == LEVEL_CITY) {
             queryProvinces();
         } else {
-           /* if (isFromWeatherActivity) {
+           if (isFromWeatherActivity) {
                 Intent intent = new Intent(this, WeatherActivity.class);
                 startActivity(intent);
-            }*/
+            }
             finish();
         }
     }
