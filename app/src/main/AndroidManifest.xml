@@ -4,8 +4,9 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -19,6 +20,8 @@
         </activity>
 
         <activity android:name="com.tweather.app.acticity.WeatherActivity"></activity>
+        <service android:name="com.tweather.app.service.AutoUpdateService"></service>
+        <receiver android:name="com.tweather.app.receiver.AutoUpdateReceiver"></receiver>
     </application>
 
 </manifest>

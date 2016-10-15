@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.tweather.app.R;
 
+import com.tweather.app.service.AutoUpdateService;
 import com.tweather.app.util.HttpCallbackListener;
 import com.tweather.app.util.HttpUtil;
 import com.tweather.app.util.Utility;
@@ -141,8 +142,8 @@ public class WeatherActivity extends Activity implements OnClickListener  {
         tvCurrentDate.setText(prefs.getString("current_date", ""));
         layoutWeatherInfo.setVisibility(View.VISIBLE);
         tvCity.setVisibility(View.VISIBLE);
-        //Intent intent = new Intent(this, AutoUpdateService.class);
-        //startService(intent);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
     @Override
     public void onBackPressed() {
